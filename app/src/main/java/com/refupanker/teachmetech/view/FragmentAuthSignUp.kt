@@ -71,9 +71,17 @@ class FragmentAuthSignUp : Fragment() {
                     val newUser = mdl_user(
                         signedUser.uid.toString(),
                         binding.AuthSignUpUsername.text.toString(),
-                        binding.AuthSignUpEmail.text.toString(),
                         0,
                     )
+
+                    /* Structure
+                        Users(collection)
+                            user-token(doc)
+                                user data
+                            user-token(doc)
+                                user data
+                    */
+
                     db.collection("Users").document(signedUser.uid).set(newUser)
                         .addOnCompleteListener() { dbw ->
                             if (dbw.isSuccessful) {

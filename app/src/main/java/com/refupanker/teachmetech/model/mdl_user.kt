@@ -5,8 +5,7 @@ import java.io.Serializable
 data class mdl_user(
     val token: String,
     val name: String,
-    val email: String,
-    val rank: Int,
-    val active: Boolean = true
+    val rank: Int = 0,
+    val active: Boolean = true,
 
-) : Serializable
+    ) : Serializable
