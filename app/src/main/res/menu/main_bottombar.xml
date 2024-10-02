@@ -14,7 +14,7 @@
         android:title="Explore" />
     <item
         android:id="@+id/item_main_messages"
-        android:icon="@drawable/img_chat"
+        android:icon="@drawable/img_messages"
         android:title="Messages" />
     <item
         android:id="@+id/item_main_profile"

@@ -24,6 +24,7 @@ class FragmentAuthSignUp : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private val db = Firebase.firestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth

@@ -41,7 +41,7 @@ class FragmentCourses : Fragment() {
             GetCourses()
         }
 
-        binding.imageButton.setOnClickListener { MakeSearch() }
+        binding.CoursesSearchBtn.setOnClickListener { MakeSearch() }
         binding.CoursesSearch.setOnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 MakeSearch()

@@ -33,7 +33,7 @@ class ActivityMain : AppCompatActivity() {
         }
     }
 
-    val FragmentOrder = arrayOf("home", "courses", "explore", "messages", "profile")
+    val FragmentOrder = arrayOf("home", "courses", "explore", "messages","subdminvites", "profile")
     fun setContentFragment(fragment: Fragment) {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.main_frame)
         if (currentFragment != null && currentFragment::class == fragment::class) {
