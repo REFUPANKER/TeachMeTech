@@ -51,4 +51,9 @@ class FragmentProfile : Fragment() {
         badges.sortBy { m -> m.name }
         adapter_badge?.notifyDataSetChanged()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

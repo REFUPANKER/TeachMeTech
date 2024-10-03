@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    android:background="#202020"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/item_msg_sender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sender"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/item_msg_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/item_msg_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:textColor="#909090"
+        android:textSize="16sp" />
+</LinearLayout>

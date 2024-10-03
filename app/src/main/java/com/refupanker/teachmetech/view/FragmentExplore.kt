@@ -1,11 +1,14 @@
 package com.refupanker.teachmetech.view
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.Query
@@ -14,8 +17,10 @@ import com.google.firebase.ktx.Firebase
 import com.refupanker.teachmetech.adapter.adapter_courses
 import com.refupanker.teachmetech.adapter.adapter_leaderboard
 import com.refupanker.teachmetech.databinding.FragmentExploreBinding
+import com.refupanker.teachmetech.model.mdl_chatroom
 import com.refupanker.teachmetech.model.mdl_course
 import com.refupanker.teachmetech.model.mdl_user
+import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
 import kotlin.random.Random
@@ -49,6 +54,20 @@ class FragmentExplore : Fragment() {
         binding.ExploreLeaderboard.adapter = adapter_leaderboardRows
         binding.ExploreLeaderboard.layoutManager = LinearLayoutManager(ctx)
 
+        binding.ExploreChatRoom1.setOnClickListener {
+            val chatIntent = Intent(context, ActivityChat::class.java)
+            chatIntent.putExtra(
+                "ChatRoom", mdl_chatroom(
+                    "PublicChatRooom1",
+                    "public",
+                    "Chat Room 1"
+                )
+            )
+            startActivity(chatIntent)
+        }
+
+
+
         GetLeaderboard()
         GetCourses()
 
@@ -56,32 +75,40 @@ class FragmentExplore : Fragment() {
     }
 
     fun GetLeaderboard() {
-        //TODO: rank naming guide
-        leaderboard.clear()
-        binding.ExploreLeaderboardStatus.text = "Loading ..."
-        db.collection("Users").orderBy("rank", Query.Direction.DESCENDING).limit(10).get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    if (task.result.isEmpty) {
-                        binding.ExploreLeaderboardStatus.text = "No data exists"
-                    } else {
-                        binding.ExploreLeaderboardStatus.text = ""
-                        for (i in task.result) {
-                            leaderboard.add(
-                                mdl_user(
-                                    token = i.getString("token").toString(),
-                                    name = i.getString("name").toString(),
-                                    rank = i.getLong("rank").toString().toInt(),
-                                    active = i.getBoolean("active") == true,
-                                )
-                            )
+        //TODO: improvement > rank naming guide
+        viewLifecycleOwner.lifecycleScope.launch {
+            leaderboard.clear()
+            binding.ExploreLeaderboardStatus.visibility = View.VISIBLE
+            binding.ExploreLeaderboardStatus.text = "Loading ..."
+            db.collection("Users").orderBy("rank", Query.Direction.DESCENDING).limit(10).get()
+                .addOnCompleteListener { task ->
+                    try {
+                        if (task.isSuccessful) {
+                            if (task.result.isEmpty) {
+                                binding.ExploreLeaderboardStatus.text = "No data exists"
+                            } else {
+                                binding.ExploreLeaderboardStatus.visibility = View.GONE
+                                for (i in task.result) {
+                                    leaderboard.add(
+                                        mdl_user(
+                                            token = i.getString("token").toString(),
+                                            name = i.getString("name").toString(),
+                                            rank = i.getLong("rank").toString().toInt(),
+                                            active = i.getBoolean("active") == true,
+                                        )
+                                    )
+                                }
+                                adapter_leaderboardRows?.notifyDataSetChanged()
+                            }
+                        } else {
+                            binding.ExploreLeaderboardStatus.text = "Cant get leaderboard data"
                         }
-                        adapter_leaderboardRows?.notifyDataSetChanged()
+                    } catch (e: Exception) {
                     }
-                } else {
-                    binding.ExploreLeaderboardStatus.text = "Cant get leaderboard data"
                 }
-            }
+
+
+        }
     }
 
     fun GetCourses() {
@@ -103,5 +130,10 @@ class FragmentExplore : Fragment() {
         courses.sortedByDescending { c -> c.likes }
 
         adapter_popularCourses?.notifyDataSetChanged()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

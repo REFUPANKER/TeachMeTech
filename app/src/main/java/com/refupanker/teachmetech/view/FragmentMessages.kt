@@ -1,24 +1,17 @@
 package com.refupanker.teachmetech.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.refupanker.teachmetech.FragmentSubDmInvites
 import com.refupanker.teachmetech.R
 import com.refupanker.teachmetech.adapter.adapter_messagers
 import com.refupanker.teachmetech.databinding.FragmentMessagesBinding
-import com.refupanker.teachmetech.model.mdl_course
 import com.refupanker.teachmetech.model.mdl_user
-import java.util.Date
 import java.util.UUID
-import kotlin.random.Random
 
 
 class FragmentMessages : Fragment() {
@@ -88,5 +81,10 @@ class FragmentMessages : Fragment() {
         }
         messagers.sortBy { m -> m.name }
         adapter_msgrs?.notifyDataSetChanged()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

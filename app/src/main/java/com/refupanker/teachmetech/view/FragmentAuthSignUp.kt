@@ -16,6 +16,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.refupanker.teachmetech.databinding.FragmentAuthSignUpBinding
 import com.refupanker.teachmetech.model.mdl_user
+import com.refupanker.teachmetech.model.mdl_userprops
 
 class FragmentAuthSignUp : Fragment() {
 
@@ -68,22 +69,26 @@ class FragmentAuthSignUp : Fragment() {
             if (task.isSuccessful) {
                 val signedUser = auth.currentUser
                 if (signedUser != null) {
-                    // create user node
+                    // create User
                     val newUser = mdl_user(
                         signedUser.uid.toString(),
                         binding.AuthSignUpUsername.text.toString(),
                         0,
                     )
-
-                    /* Structure
-                        Users(collection)
-                            user-token(doc)
-                                user data
-                            user-token(doc)
-                                user data
-                    */
-
                     db.collection("Users").document(signedUser.uid).set(newUser)
+                        .addOnCompleteListener() { dbw ->
+                            if (!dbw.isSuccessful) {
+                                Toast.makeText(
+                                    binding.root.context,
+                                    "Cant save your data right now",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                binding.AuthSignUpButton.isEnabled = true
+                            }
+                        }
+                    // Create UserProps
+                    val userProps = mdl_userprops(signedUser.uid)
+                    db.collection("UserProps").document(signedUser.uid).set(userProps)
                         .addOnCompleteListener() { dbw ->
                             if (dbw.isSuccessful) {
                                 // go to main page
@@ -98,6 +103,8 @@ class FragmentAuthSignUp : Fragment() {
                                 binding.AuthSignUpButton.isEnabled = true
                             }
                         }
+
+
                 }
             } else {
                 when (task.exception) {

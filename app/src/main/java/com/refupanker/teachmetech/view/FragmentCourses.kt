@@ -85,4 +85,8 @@ class FragmentCourses : Fragment() {
     fun MakeSearch() {
         Toast.makeText(this.context, "Searching", Toast.LENGTH_SHORT).show()
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
