@@ -60,17 +60,17 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/Messages_StatusText"
+            android:id="@+id/Messages_Status"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Results displayed here"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:text="Under construction"
             android:textAlignment="center"
-            android:textColor="#969696"
-            android:textSize="18sp"
+            android:textColor="#F84545"
+            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardView4" />
+            app:layout_constraintTop_toTopOf="@+id/Messages_RecyclerView" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/Messages_RecyclerView"
@@ -80,6 +80,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Messages_StatusText" />
+            app:layout_constraintTop_toBottomOf="@+id/cardView4" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

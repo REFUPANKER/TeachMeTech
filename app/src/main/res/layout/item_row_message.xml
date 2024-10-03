@@ -22,11 +22,4 @@
         android:text="Text"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/item_msg_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Date"
-        android:textColor="#909090"
-        android:textSize="16sp" />
 </LinearLayout>

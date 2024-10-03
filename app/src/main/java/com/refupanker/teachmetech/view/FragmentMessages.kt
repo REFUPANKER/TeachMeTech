@@ -63,7 +63,7 @@ class FragmentMessages : Fragment() {
             parentFragmentManager.fragments.remove(this)
         }
 
-        GetMessagers()
+        //GetMessagers()
 
         return binding.root
     }

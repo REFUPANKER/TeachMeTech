@@ -65,15 +65,33 @@
 
         <ImageButton
             android:id="@+id/Chat_SendMsg"
-            android:layout_width="58dp"
-            android:layout_height="71dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@android:color/transparent"
             android:contentDescription="Send Message"
             android:padding="10dp"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/img_confirm"
-            app:tint="@color/white"
-            tools:layout_editor_absoluteY="8dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/img_send"
+            app:tint="@color/white" />
+
+        <EditText
+            android:id="@+id/Chat_Input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="top"
+            android:hint="Type message"
+            android:maxHeight="170dp"
+            android:maxLength="216"
+            android:textSize="20sp"
+            android:maxLines="3"
+            android:textColor="@color/white"
+            android:textColorHint="#BEBEBE"
+            app:layout_constraintEnd_toStartOf="@+id/Chat_SendMsg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

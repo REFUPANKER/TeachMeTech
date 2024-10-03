@@ -27,9 +27,5 @@ class adapter_chat_messages(private val rows: ArrayList<mdl_chat_msg>) :
     override fun onBindViewHolder(holder: holder, position: Int) {
         holder.binding.itemMsgSender.text = rows[position].sender
         holder.binding.itemMsgText.text = rows[position].message
-
-        holder.binding.itemMsgDate.text =
-            SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(rows[position].date)
-
     }
 }
