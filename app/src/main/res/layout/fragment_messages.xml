@@ -5,7 +5,7 @@
     android:id="@+id/Messages_Frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:paddingHorizontal="10dp"
     tools:context=".view.FragmentMessages">
 
     <androidx.constraintlayout.widget.ConstraintLayout

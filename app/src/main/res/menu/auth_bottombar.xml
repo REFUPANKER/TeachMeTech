@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Sign Up"
-        android:id="@+id/item_auth_signup"/>
+        android:id="@+id/item_auth_signup"
+        android:icon="@drawable/img_signup"
+        android:title="Sign Up" />
     <item
-        android:title="Login"
-        android:id="@+id/item_auth_login"/>
+        android:id="@+id/item_auth_login"
+        android:icon="@drawable/img_signin"
+        android:title="Login" />
 </menu>

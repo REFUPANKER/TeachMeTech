@@ -19,11 +19,11 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/Main_BottomBar"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="80dp"
         android:orientation="horizontal"
         app:itemBackground="@drawable/style_main_bottombar"
-        app:itemIconSize="30dp"
         app:itemIconTint="@drawable/style_main_bottombar"
         app:itemTextColor="@drawable/style_main_bottombar"
         app:labelVisibilityMode="labeled"

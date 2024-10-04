@@ -38,7 +38,7 @@ class FragmentAuthLogin : Fragment() {
         binding.AuthLoginButton.isEnabled = false
         // check fields
         if (binding.AuthLoginEmail.text?.isEmpty() == true) {
-            binding.AuthLoginEmail.setError("dont wory we arent stealing emais")
+            binding.AuthLoginEmail.setError("dont wory we arent stealing emails")
             binding.AuthLoginButton.isEnabled = true
             return
         }

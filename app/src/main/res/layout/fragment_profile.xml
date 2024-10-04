@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:paddingHorizontal="10dp"
+    android:paddingTop="10dp"
     tools:context=".view.FragmentProfile">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -104,14 +105,28 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
             android:max="100"
-            android:progress="50"
+            android:progress="0"
             android:progressBackgroundTint="#2D2D2D"
             android:progressDrawable="@android:drawable/progress_horizontal"
-            android:progressTint="#40A929"
+            android:progressTint="#36A91F"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/Profile_rankImg_next"
             app:layout_constraintStart_toEndOf="@+id/Profile_rankImg_current"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+        <TextView
+            android:id="@+id/Profile_rank"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="0/100"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/Profile_rankProgress"
+            app:layout_constraintEnd_toEndOf="@id/Profile_rankProgress"
+            app:layout_constraintStart_toStartOf="@id/Profile_rankProgress"
+            app:layout_constraintTop_toTopOf="@id/Profile_rankProgress" />
 
         <ImageView
             android:id="@+id/Profile_rankImg_next"
@@ -162,5 +177,17 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    <Button
+        android:id="@+id/Profile_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/style_btn_danger_outline"
+        android:text="Logout"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

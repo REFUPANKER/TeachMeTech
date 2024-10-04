@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:paddingHorizontal="10dp"
+    android:paddingTop="10dp"
     tools:context=".view.FragmentHome">
 
     <LinearLayout
@@ -24,6 +25,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/Home_Username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="USERNAME"

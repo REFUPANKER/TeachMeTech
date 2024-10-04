@@ -1,6 +1,7 @@
 package com.refupanker.teachmetech.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -21,13 +23,13 @@ import java.util.UUID
 class FragmentHome : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    public val binding get() = _binding!!
 
     private val annoncs: ArrayList<mdl_announcement> = arrayListOf()
     private var adapter_annoncs: adapter_announcements? = null
 
-
     private val db = Firebase.firestore
+    private val auth = Firebase.auth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,15 +37,19 @@ class FragmentHome : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val ctx = requireContext()
 
         adapter_annoncs = adapter_announcements(annoncs)
         binding.HomeRecyclerViewAnnouncements.adapter = adapter_annoncs
         binding.HomeRecyclerViewAnnouncements.layoutManager = LinearLayoutManager(this.context)
 
+        GetUserData()
+
         GetAnnoncs()
 
         return binding.root
     }
+
 
     fun AddAnnonc() {
         val token = UUID.randomUUID().toString()
@@ -59,6 +65,34 @@ class FragmentHome : Fragment() {
             }
         }
 
+    }
+    //TODO: better user data view on UI
+    private fun GetUserData() {
+        binding.HomeUsername.text = "Loading ..."
+        lifecycleScope.launch {
+            Firebase.firestore.collection("Users")
+                .document(auth.currentUser?.uid.toString()).get()
+                .addOnCompleteListener { t ->
+                    try {
+                        if (t.isSuccessful) {
+                            val user = mdl_user(
+                                token = t.result.data?.get("token") as String,
+                                name = t.result.data!!["name"] as String,
+                                rank = t.result.data!!["rank"] as Long,
+                                active = t.result.data!!["active"] as Boolean
+                            )
+
+                            binding.HomeUsername.text = user?.name
+                        } else {
+                            Toast.makeText(requireContext(), "Cant get user data", Toast.LENGTH_SHORT)
+                                .show()
+
+                        }
+                    } catch (e: Exception) {
+
+                    }
+                }
+        }
     }
 
     private fun GetAnnoncs() {

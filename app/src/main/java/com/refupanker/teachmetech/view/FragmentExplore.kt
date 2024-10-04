@@ -91,10 +91,10 @@ class FragmentExplore : Fragment() {
                                 for (i in task.result) {
                                     leaderboard.add(
                                         mdl_user(
-                                            token = i.getString("token").toString(),
-                                            name = i.getString("name").toString(),
-                                            rank = i.getLong("rank").toString().toInt(),
-                                            active = i.getBoolean("active") == true,
+                                            token = i.getString("token") as String,
+                                            name = i.getString("name") as String,
+                                            rank = i.getLong("rank") as Long,
+                                            active = i.getBoolean("active") as Boolean,
                                         )
                                     )
                                 }

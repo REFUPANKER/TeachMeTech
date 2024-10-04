@@ -1,19 +1,24 @@
 package com.refupanker.teachmetech.view
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.refupanker.teachmetech.adapter.adapter_chat_messages
 import com.refupanker.teachmetech.databinding.ActivityChatBinding
 import com.refupanker.teachmetech.model.mdl_chat_msg
 import com.refupanker.teachmetech.model.mdl_chatroom
+import com.refupanker.teachmetech.model.mdl_user
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -26,7 +31,13 @@ class ActivityChat : AppCompatActivity() {
     private var adapter_msgs: adapter_chat_messages? = null
 
     private var chatRoom: mdl_chatroom? = null
+
     val db = Firebase.database
+    private val auth = Firebase.auth
+
+    private var user: mdl_user? = null
+    private var msgScore: Int = 0
+    private var _rank: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +54,32 @@ class ActivityChat : AppCompatActivity() {
         binding.ChatSendMsg.setOnClickListener { SendMessage() }
         binding.ChatGoBack.setOnClickListener { finish() }
 
+        //get user
+        lifecycleScope.launch {
+            Firebase.firestore.collection("Users")
+                .document(auth.currentUser?.uid.toString()).get()
+                .addOnCompleteListener { t ->
+                    try {
+                        if (t.isSuccessful) {
+                            user = mdl_user(
+                                token = t.result.data?.get("token") as String,
+                                name = t.result.data!!["name"] as String,
+                                rank = t.result.data!!["rank"] as Long,
+                                active = t.result.data!!["active"] as Boolean
+                            )
+                            _rank = user!!.rank
+                        } else {
+                            Toast.makeText(
+                                baseContext, "Cant get user data", Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } catch (e: Exception) {
+
+                    }
+                }
+        }
+
+        //setup chat
         val chatNode = chatRoom?.token.toString()
 
         db.reference.child("ChatRooms").child(chatNode)
@@ -83,6 +120,10 @@ class ActivityChat : AppCompatActivity() {
     }
 
     fun SendMessage() {
+        if (user == null) {
+            Toast.makeText(this, "Waiting data to receive", Toast.LENGTH_SHORT).show()
+            return
+        }
         var msg = binding.ChatInput.text.toString().trim()
             .replace("\n", " ")
             .replace("\u200E", "")
@@ -92,7 +133,6 @@ class ActivityChat : AppCompatActivity() {
             return
         }
 
-
         var msgToken = UUID.randomUUID().toString()
         db.reference
             .child("ChatRooms")
@@ -101,11 +141,34 @@ class ActivityChat : AppCompatActivity() {
             .setValue(
                 mdl_chat_msg(
                     msgToken,
-                    "Admin",
+                    user!!.name,
                     msg
                 )
             )
+
         binding.ChatInput.text = null
+        msgScore += 1
+
+        if (msgScore % 30 == 0) {
+            // add rank score
+            _rank += 5
+            lifecycleScope.launch {
+                Firebase.firestore.collection("Users")
+                    .document(auth.currentUser?.uid.toString())
+                    .update("rank", _rank)
+            }
+            Toast.makeText(baseContext, "rank score increased !!", Toast.LENGTH_SHORT).show()
+        }
+        binding.ChatInput.isEnabled = false
+        lifecycleScope.launch {
+            for (i in 10 downTo 1) {
+                binding.ChatInput.hint = "Wait $i seconds to next message"
+                delay(1000L)
+            }
+            binding.ChatInput.hint = "Type message"
+            binding.ChatInput.isEnabled = true
+            binding.ChatInput.requestFocus()
+        }
     }
 
     fun AddMessageItem(msg: mdl_chat_msg) {
@@ -132,7 +195,6 @@ class ActivityChat : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        //TODO: destroy listener on destroy
     }
 
 }

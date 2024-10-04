@@ -1,23 +1,38 @@
 package com.refupanker.teachmetech.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.google.firebase.FirebaseApp
+import androidx.lifecycle.lifecycleScope
+import androidx.transition.Visibility
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.refupanker.teachmetech.R
 import com.refupanker.teachmetech.databinding.ActivityMainBinding
+import com.refupanker.teachmetech.model.mdl_user
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class ActivityMain : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
+    private val auth = Firebase.auth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (auth.currentUser == null) {
+            Toast.makeText(this, "Auth required", Toast.LENGTH_SHORT).show()
+            GoToAuth()
+        }
 
         setContentFragment(FragmentHome())
 
@@ -33,9 +48,17 @@ class ActivityMain : AppCompatActivity() {
         }
     }
 
-    val FragmentOrder = arrayOf("home", "courses", "explore", "messages","subdminvites", "profile")
+    fun GoToAuth() {
+        startActivity(Intent(this, ActivityAuth::class.java))
+        finish()
+        return
+    }
+
+    val FragmentOrder = arrayOf("home", "courses", "explore", "messages", "subdminvites", "profile")
     fun setContentFragment(fragment: Fragment) {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.main_frame)
+        val targetFragmentName =
+            fragment.javaClass.simpleName.lowercase().replace("fragment", "")
         if (currentFragment != null && currentFragment::class == fragment::class) {
             Toast.makeText(this, "Already shown", Toast.LENGTH_SHORT).show()
         } else {
@@ -44,8 +67,6 @@ class ActivityMain : AppCompatActivity() {
             if (currentFragment != null) {
                 val currentFragmentName =
                     currentFragment.javaClass.simpleName.lowercase().replace("fragment", "")
-                val targetFragmentName =
-                    fragment.javaClass.simpleName.lowercase().replace("fragment", "")
                 if (FragmentOrder.indexOf(currentFragmentName) >
                     FragmentOrder.indexOf(targetFragmentName)
                 ) {
