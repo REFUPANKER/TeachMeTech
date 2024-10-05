@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.collection.ArrayMap
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.ktx.auth
@@ -16,6 +17,10 @@ import com.google.firebase.ktx.Firebase
 import com.refupanker.teachmetech.adapter.adapter_announcements
 import com.refupanker.teachmetech.databinding.FragmentHomeBinding
 import com.refupanker.teachmetech.model.mdl_announcement
+import com.refupanker.teachmetech.model.mdl_course
+import com.refupanker.teachmetech.model.mdl_sub_paragraph
+import com.refupanker.teachmetech.model.mdl_sub_title
+import com.refupanker.teachmetech.model.mdl_sub_video
 import com.refupanker.teachmetech.model.mdl_user
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -50,7 +55,6 @@ class FragmentHome : Fragment() {
         return binding.root
     }
 
-
     fun AddAnnonc() {
         val token = UUID.randomUUID().toString()
         db.collection("Announcements").document(token).set(
@@ -66,6 +70,7 @@ class FragmentHome : Fragment() {
         }
 
     }
+
     //TODO: better user data view on UI
     private fun GetUserData() {
         binding.HomeUsername.text = "Loading ..."
@@ -84,7 +89,11 @@ class FragmentHome : Fragment() {
 
                             binding.HomeUsername.text = user?.name
                         } else {
-                            Toast.makeText(requireContext(), "Cant get user data", Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                requireContext(),
+                                "Cant get user data",
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
 
                         }
@@ -100,7 +109,10 @@ class FragmentHome : Fragment() {
             annoncs.clear()
             binding.HomeAnnocsStatus.visibility = View.VISIBLE
             binding.HomeAnnocsStatus.text = "Loading ..."
-            db.collection("Announcements").orderBy("date", Query.Direction.DESCENDING).get()
+            db.collection("Announcements")
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(5)
+                .get()
                 .addOnCompleteListener { task ->
                     try {
                         if (task.isSuccessful) {

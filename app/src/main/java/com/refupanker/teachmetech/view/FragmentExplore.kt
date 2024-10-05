@@ -123,7 +123,7 @@ class FragmentExplore : Fragment() {
                     "Hello descr \n $token",
                     "General",
                     Date(),
-                    Random.nextInt(0, 1000)
+                    Random.nextLong(0, 1000)
                 )
             )
         }

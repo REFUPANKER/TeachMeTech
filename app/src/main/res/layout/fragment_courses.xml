@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="10dp"
     tools:context=".view.FragmentCourses">
 
     <androidx.cardview.widget.CardView
@@ -24,12 +23,12 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/Courses_Search"
-                android:singleLine="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:hint="Search"
+                android:singleLine="true"
                 android:textColor="@color/white"
                 android:textColorHint="#909090"
                 android:textSize="20sp"
@@ -117,6 +116,12 @@
             android:textAlignment="center"
             android:textColor="#969696"
             android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/Course_TEST"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/Courses_RecyclerView"

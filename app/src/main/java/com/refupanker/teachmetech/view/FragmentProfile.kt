@@ -74,7 +74,9 @@ class FragmentProfile : Fragment() {
                             )
                             //TODO: rank scale
                             binding.ProfileRankProgress.progress = user.rank.toInt()
-                            binding.ProfileRank.text = user.rank.toString() + "/100"
+                            binding.ProfileRankProgress.max = user.rank.toInt() * 2
+                            binding.ProfileRank.text =
+                                user.rank.toString() + "/" + binding.ProfileRankProgress.max
                             binding.ProfileUsername.text = user.name
                         } else {
                             Toast.makeText(

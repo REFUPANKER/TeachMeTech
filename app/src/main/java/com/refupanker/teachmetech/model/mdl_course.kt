@@ -8,6 +8,6 @@ data class mdl_course(
     val title: String,
     val description: String,
     val category: String,
-    val time: Date,
-    val likes: Int = 0,
+    val date: Date = Date(),
+    val likes: Long = 0,
 ) : Serializable

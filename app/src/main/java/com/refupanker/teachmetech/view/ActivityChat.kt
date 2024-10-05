@@ -2,6 +2,7 @@ package com.refupanker.teachmetech.view
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -92,6 +93,7 @@ class ActivityChat : AppCompatActivity() {
                             AddMessageItem(
                                 mdl_chat_msg(
                                     snapshot.child("token").value.toString(),
+                                    snapshot.child("user").value.toString(),
                                     snapshot.child("sender").value.toString(),
                                     snapshot.child("message").value.toString(),
                                 )
@@ -141,6 +143,7 @@ class ActivityChat : AppCompatActivity() {
             .setValue(
                 mdl_chat_msg(
                     msgToken,
+                    user!!.token,
                     user!!.name,
                     msg
                 )
@@ -149,7 +152,7 @@ class ActivityChat : AppCompatActivity() {
         binding.ChatInput.text = null
         msgScore += 1
 
-        if (msgScore % 30 == 0) {
+        if (msgScore % 5 == 0) {
             // add rank score
             _rank += 5
             lifecycleScope.launch {
@@ -159,15 +162,15 @@ class ActivityChat : AppCompatActivity() {
             }
             Toast.makeText(baseContext, "rank score increased !!", Toast.LENGTH_SHORT).show()
         }
-        binding.ChatInput.isEnabled = false
+        binding.ChatSendMsg.isEnabled = false
+        binding.ChatInputCountDown.visibility = View.VISIBLE
         lifecycleScope.launch {
-            for (i in 10 downTo 1) {
-                binding.ChatInput.hint = "Wait $i seconds to next message"
+            for (i in 5 downTo 1) {
+                binding.ChatInputCountDown.text = i.toString() + "s"
                 delay(1000L)
             }
-            binding.ChatInput.hint = "Type message"
-            binding.ChatInput.isEnabled = true
-            binding.ChatInput.requestFocus()
+            binding.ChatInputCountDown.visibility = View.GONE
+            binding.ChatSendMsg.isEnabled = true
         }
     }
 

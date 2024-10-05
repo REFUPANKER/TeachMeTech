@@ -53,6 +53,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
+    <TextView
+        android:id="@+id/ChatInputCountDown"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="0s"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/Chat_RecyclerView"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout5"
         android:layout_width="match_parent"
@@ -85,13 +99,13 @@
             android:hint="Type message"
             android:maxHeight="170dp"
             android:maxLength="216"
-            android:textSize="20sp"
             android:maxLines="3"
             android:textColor="@color/white"
-            android:textColorHint="#BEBEBE"
+            android:textColorHint="#8C8C8C"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/Chat_SendMsg"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
