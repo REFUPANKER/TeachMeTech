@@ -27,33 +27,93 @@
             app:srcCompat="@drawable/img_back"
             app:tint="@color/white" />
 
-        <TextView
-            android:id="@+id/Course_Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLength="64"
-            android:text="Course title"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+
+        <ImageButton
+            android:id="@+id/Course_Comments"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Comments"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/Course_GoBack"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/img_comments"
+            app:tint="@color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/Course_Status"
+    <LinearLayout
+        android:id="@+id/constraintLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Status Waiting"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
+        android:background="#151515"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+
+        <TextView
+            android:id="@+id/Course_Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Header Course title"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/Course_Header_Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Header Course Description"
+            android:textColor="#BEBEBE"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category : "
+                android:textColor="#BEBEBE"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/Course_Header_Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Category : Header Course Category"
+                android:textColor="#BEBEBE"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/img_heart"
+                app:tint="#BEBEBE" />
+
+            <TextView
+                android:id="@+id/Course_Header_Likes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0000"
+                android:textColor="#BEBEBE"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -63,17 +123,34 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
         <LinearLayout
-            android:id="@+id/Course_ContentHolder"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            tools:context=".view.ActivityCourse" />
+            <TextView
+                android:id="@+id/Course_Status"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Status Waiting"
+                android:textColor="#BEBEBE"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:id="@+id/Course_ContentHolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="10dp"
+                tools:context=".view.ActivityCourse" />
+
+
+        </LinearLayout>
     </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

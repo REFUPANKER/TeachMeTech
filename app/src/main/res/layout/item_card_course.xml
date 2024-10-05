@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="3dp"
     app:cardBackgroundColor="#151515"
-    app:cardCornerRadius="20dp"
-    android:layout_margin="3dp">
+    app:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -47,34 +48,22 @@
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_Course_description">
 
-            <TextView
-                android:id="@+id/item_Course_sender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLength="64"
-                android:text="Sender"
-                android:textColor="#909090"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/item_Course_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:maxLength="64"
-                android:text="Time"
-                android:textColor="#909090"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/item_Course_likes"
-                app:layout_constraintStart_toEndOf="@+id/item_Course_sender"
-                app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="24dp"
+                android:layout_height="0dp"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/item_Course_likes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/img_heart"
+                app:tint="#909090" />
 
             <TextView
                 android:id="@+id/item_Course_likes"
@@ -85,21 +74,43 @@
                 android:text="Likes"
                 android:textColor="#909090"
                 android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/item_Course_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLength="64"
+                android:text="Time"
+                android:textColor="#909090"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/item_Course_category"
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#252525"
-            android:maxLength="64"
-            android:padding="5dp"
-            android:text="Category"
-            android:textColor="#909090"
-            android:textSize="18sp"
+            app:cardBackgroundColor="#252525"
+            app:cardCornerRadius="15dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/item_Course_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLength="64"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:text="Category"
+                android:textColor="#909090"
+                android:textSize="16sp" />
+        </androidx.cardview.widget.CardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

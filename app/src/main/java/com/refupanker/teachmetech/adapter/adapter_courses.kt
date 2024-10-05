@@ -3,6 +3,9 @@ package com.refupanker.teachmetech.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar.LayoutParams
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.refupanker.teachmetech.databinding.ItemCardCourseBinding
 import com.refupanker.teachmetech.model.mdl_course
@@ -10,10 +13,12 @@ import com.refupanker.teachmetech.view.ActivityCourse
 import java.text.SimpleDateFormat
 
 //TODO: optimize small card ui
-class adapter_courses(private val courses: ArrayList<mdl_course>, isSmallCard: Boolean = false) :
+class adapter_courses(
+    private val courses: ArrayList<mdl_course>) :
     RecyclerView.Adapter<adapter_courses.holder>() {
 
-    class holder(val binding: ItemCardCourseBinding) : RecyclerView.ViewHolder(binding.root)
+    class holder(val binding: ItemCardCourseBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): holder {
         val binding =

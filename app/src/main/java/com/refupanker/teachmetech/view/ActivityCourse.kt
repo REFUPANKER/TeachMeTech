@@ -40,6 +40,9 @@ class ActivityCourse : AppCompatActivity() {
         binding.CourseGoBack.setOnClickListener { finish() }
 
         binding.CourseTitle.text = course.title
+        binding.CourseHeaderLikes.text = course.likes.toString()
+        binding.CourseHeaderDescription.text = course.description
+        binding.CourseHeaderCategory.text = course.category
 
         lifecycleScope.launch {
             binding.CourseStatus.visibility = View.VISIBLE
@@ -94,7 +97,7 @@ class ActivityCourse : AppCompatActivity() {
                                         val newText = TextView(baseContext)
                                         newText.text = j.get("text").toString()
                                         newText.setTextColor(Color.parseColor("#BEBEBE"))
-                                        newText.textSize = 14f
+                                        newText.textSize = 16f
                                         newText.layoutParams =
                                             ViewGroup.LayoutParams(
                                                 LayoutParams.MATCH_PARENT,
@@ -130,9 +133,10 @@ class ActivityCourse : AppCompatActivity() {
                             }
                             binding.CourseStatus.visibility = View.GONE
                         } else {
-                            Log.e("TMT", t.exception.toString())
+                            binding.CourseStatus.text = "Cant get course data"
                         }
                     } catch (e: Exception) {
+                        binding.CourseStatus.text = "Cant get course data"
                     }
                 }
         }

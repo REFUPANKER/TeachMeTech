@@ -80,7 +80,9 @@ class FragmentExplore : Fragment() {
             leaderboard.clear()
             binding.ExploreLeaderboardStatus.visibility = View.VISIBLE
             binding.ExploreLeaderboardStatus.text = "Loading ..."
-            db.collection("Users").orderBy("rank", Query.Direction.DESCENDING).limit(10).get()
+            db.collection("Users")
+                .orderBy("rank", Query.Direction.DESCENDING)
+                .limit(5).get()
                 .addOnCompleteListener { task ->
                     try {
                         if (task.isSuccessful) {
@@ -112,24 +114,36 @@ class FragmentExplore : Fragment() {
     }
 
     fun GetCourses() {
-        //TODO: first get course tokens order by like count then bring course data
         courses.clear()
-        for (i in 0..4) {
-            val token = UUID.randomUUID().toString()
-            courses.add(
-                mdl_course(
-                    token,
-                    "My Popular Course Title",
-                    "Hello descr \n $token",
-                    "General",
-                    Date(),
-                    Random.nextLong(0, 1000)
-                )
-            )
+        lifecycleScope.launch {
+            binding.ExplorePopularCoursesdStatus.visibility = View.VISIBLE
+            binding.ExplorePopularCoursesdStatus.text = "Loading ..."
+            db.collection("Courses")
+                .orderBy("likes", Query.Direction.DESCENDING)
+                .limit(5)
+                .get()
+                .addOnCompleteListener { t ->
+                    if (t.isSuccessful) {
+                        for (i in t.result) {
+                            courses.add(
+                                mdl_course(
+                                    token = i.getString("token").toString(),
+                                    title = i.getString("title").toString(),
+                                    description = i.getString("description").toString(),
+                                    category = i.getString("category").toString(),
+                                    date = i.getDate("date") as Date,
+                                    likes = i.getLong("likes") as Long
+                                )
+                            )
+                        }
+                        binding.ExplorePopularCoursesdStatus.visibility = View.GONE
+                        adapter_popularCourses?.notifyDataSetChanged()
+                    } else {
+                        Toast.makeText(context, "Cant get courses", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
-        courses.sortedByDescending { c -> c.likes }
 
-        adapter_popularCourses?.notifyDataSetChanged()
     }
 
     override fun onDestroy() {

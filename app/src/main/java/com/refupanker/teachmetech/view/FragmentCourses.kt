@@ -53,7 +53,6 @@ class FragmentCourses : Fragment() {
                 R.id.Courses_order_newest -> courses.sortByDescending { c -> c.date }
                 R.id.Courses_order_oldest -> courses.sortBy { c -> c.date }
             }
-
             adapter?.notifyDataSetChanged()
         }
 

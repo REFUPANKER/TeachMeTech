@@ -17,8 +17,8 @@
 
         <ImageButton
             android:id="@+id/DmInvites_GoBack"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@android:color/transparent"
             android:contentDescription="Go Back"
             android:padding="10dp"
