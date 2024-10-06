@@ -1,23 +1,33 @@
 package com.refupanker.teachmetech.view
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+import com.refupanker.teachmetech.R
 import com.refupanker.teachmetech.adapter.adapter_badges
 import com.refupanker.teachmetech.databinding.FragmentProfileBinding
 import com.refupanker.teachmetech.model.mdl_badge
 import com.refupanker.teachmetech.model.mdl_user
 import com.refupanker.teachmetech.model.mdl_userprops
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.UUID
 
 
@@ -29,6 +39,7 @@ class FragmentProfile : Fragment() {
     private var adapter_badge: adapter_badges? = null
 
     private val auth = Firebase.auth
+    private val storage = Firebase.storage.reference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +66,7 @@ class FragmentProfile : Fragment() {
         return binding.root
     }
 
+
     private fun GetUserData() {
         lifecycleScope.launch {
             //get User
@@ -77,6 +89,30 @@ class FragmentProfile : Fragment() {
                             binding.ProfileRank.text =
                                 user.rank.toString() + "/" + binding.ProfileRankProgress.max
                             binding.ProfileUsername.text = user.name
+
+                            // Get user profile photo
+                            storage.child("ProfilePhotos/${user.token}")
+                                .getBytes(Long.MAX_VALUE)
+                                .addOnCompleteListener { t ->
+                                    try {
+                                        if (t.isSuccessful) {
+                                            Log.e("TMT", "Result : " + t.result.toString())
+                                            val bmp = BitmapFactory.decodeByteArray(
+                                                t.result,
+                                                0,
+                                                t.result.size
+                                            )
+                                            binding.ProfilePfp.setImageBitmap(bmp)
+                                        } else {
+                                            binding.ProfilePfp.imageTintList =
+                                                ColorStateList.valueOf(
+                                                    Color.WHITE
+                                                )
+                                        }
+                                    } catch (e: Exception) {
+                                    }
+                                }
+
                         } else {
                             Toast.makeText(
                                 requireContext(),

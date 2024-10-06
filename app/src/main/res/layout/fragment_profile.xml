@@ -7,7 +7,7 @@
     tools:context=".view.FragmentProfile">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/Profile_pfp"
+        android:id="@+id/constraintLayout9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,21 +15,21 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/Profile_pfp"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:contentDescription="Profile Image"
             android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_launcher_foreground" />
+            app:srcCompat="@drawable/img_profile" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/Profile_pfp"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -65,7 +65,7 @@
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Profile_pfp">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
 
         <TextView
             android:id="@+id/textView6"

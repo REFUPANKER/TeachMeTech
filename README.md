@@ -15,17 +15,23 @@ DB Side
     - Leaderboard
 User Items
   - Add popup profile page (contains : general props,send dm invite)
+
 Home
   - display better user data info
+
 Profile
   - add courses progress section
+
 Courses
   - add better search with categories
+
 Chat Room
   - Users list in room
+
 Settings (accessible from profile page)
   - Section
     - edit user data
+  - 
 ----------------------------------------------------------
 ### Extra
  #### Web Page
