@@ -10,8 +10,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.getField
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
 import com.refupanker.teachmetech.R
 import com.refupanker.teachmetech.adapter.adapter_courses
@@ -65,6 +68,13 @@ class FragmentCourses : Fragment() {
                 false
             }
         }
+        binding.CoursesClearSearch.setOnClickListener {
+            binding.CoursesClearSearch.visibility = View.GONE
+            binding.CoursesSearch.text = null
+            binding.CoursesStatusText.text = null
+            binding.CoursesStatusText.visibility = View.GONE
+            GetCourses()
+        }
 
         GetCourses()
 
@@ -81,30 +91,80 @@ class FragmentCourses : Fragment() {
                 .limit(5)
                 .get()
                 .addOnCompleteListener { t ->
-                    if (t.isSuccessful) {
-                        for (i in t.result) {
-                            courses.add(
-                                mdl_course(
-                                    token = i.getString("token").toString(),
-                                    title = i.getString("title").toString(),
-                                    description = i.getString("description").toString(),
-                                    category = i.getString("category").toString(),
-                                    date = i.getDate("date") as Date,
-                                    likes = i.getLong("likes") as Long
+                    try {
+                        if (t.isSuccessful) {
+                            for (i in t.result) {
+                                courses.add(
+                                    mdl_course(
+                                        token = i.getString("token").toString(),
+                                        title = i.getString("title").toString(),
+                                        description = i.getString("description").toString(),
+                                        category = i.getString("category").toString(),
+                                        date = i.getDate("date") as Date,
+                                        likes = i.getLong("likes") as Long
+                                    )
                                 )
-                            )
+                            }
+                            binding.CoursesStatusText.visibility = View.GONE
+                            adapter?.notifyDataSetChanged()
+                        } else {
+                            Toast.makeText(context, "Cant get courses", Toast.LENGTH_SHORT).show()
                         }
-                        binding.CoursesStatusText.visibility = View.GONE
-                        adapter?.notifyDataSetChanged()
-                    } else {
-                        Toast.makeText(context, "Cant get courses", Toast.LENGTH_SHORT).show()
+                    } catch (e: Exception) {
                     }
                 }
         }
     }
 
     fun MakeSearch() {
-        Toast.makeText(this.context, "Searching", Toast.LENGTH_SHORT).show()
+        if (binding.CoursesSearch.text!!.length < 3) {
+            Toast.makeText(
+                this.context,
+                "cant search short text (min 3 letter)",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        courses.clear()
+        adapter?.notifyDataSetChanged()
+        binding.CoursesClearSearch.visibility = View.VISIBLE
+        binding.CoursesStatusText.visibility = View.VISIBLE
+        binding.CoursesStatusText.text = "Searching ..."
+        lifecycleScope.launch {
+            val searchText = binding.CoursesSearch.text.toString()
+            db.collection("Courses")
+                .whereEqualTo("title", searchText.toCamelCaseSimple())
+                .get().addOnSuccessListener { result ->
+                    try {
+                        if (result.isEmpty) {
+                            binding.CoursesStatusText.text = "No courses found"
+                        } else {
+                            binding.CoursesStatusText.text = "${result.count()} courses found"
+                            for (i in result.documents) {
+                                courses.add(
+                                    mdl_course(
+                                        token = i.getString("token") as String,
+                                        title = i.getString("title") as String,
+                                        description = i.getString("description") as String,
+                                        category = i.getString("category") as String,
+                                        date = i.getDate("date") as Date,
+                                        likes = i.getLong("likes") as Long
+                                    )
+                                )
+                            }
+                            adapter?.notifyDataSetChanged()
+                        }
+                    } catch (e: Exception) {
+                        binding.CoursesStatusText.text = "An error occurred"
+                    }
+                }
+        }
+    }
+
+    fun String.toCamelCaseSimple(): String {
+        return split(" ")
+            .joinToString(" ")
+            { it.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } }
     }
 
     fun AddCourse() {
@@ -114,7 +174,7 @@ class FragmentCourses : Fragment() {
                 .set(
                     mdl_course(
                         token = courseToken,
-                        "My Course",
+                        "My Course".toCamelCaseSimple(),
                         "Hello we are developing app",
                         "General"
                     )

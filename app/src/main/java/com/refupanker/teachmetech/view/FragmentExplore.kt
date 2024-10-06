@@ -123,23 +123,26 @@ class FragmentExplore : Fragment() {
                 .limit(5)
                 .get()
                 .addOnCompleteListener { t ->
-                    if (t.isSuccessful) {
-                        for (i in t.result) {
-                            courses.add(
-                                mdl_course(
-                                    token = i.getString("token").toString(),
-                                    title = i.getString("title").toString(),
-                                    description = i.getString("description").toString(),
-                                    category = i.getString("category").toString(),
-                                    date = i.getDate("date") as Date,
-                                    likes = i.getLong("likes") as Long
+                    try {
+                        if (t.isSuccessful) {
+                            for (i in t.result) {
+                                courses.add(
+                                    mdl_course(
+                                        token = i.getString("token").toString(),
+                                        title = i.getString("title").toString(),
+                                        description = i.getString("description").toString(),
+                                        category = i.getString("category").toString(),
+                                        date = i.getDate("date") as Date,
+                                        likes = i.getLong("likes") as Long
+                                    )
                                 )
-                            )
+                            }
+                            binding.ExplorePopularCoursesdStatus.visibility = View.GONE
+                            adapter_popularCourses?.notifyDataSetChanged()
+                        } else {
+                            Toast.makeText(context, "Cant get courses", Toast.LENGTH_SHORT).show()
                         }
-                        binding.ExplorePopularCoursesdStatus.visibility = View.GONE
-                        adapter_popularCourses?.notifyDataSetChanged()
-                    } else {
-                        Toast.makeText(context, "Cant get courses", Toast.LENGTH_SHORT).show()
+                    } catch (e: Exception) {
                     }
                 }
         }

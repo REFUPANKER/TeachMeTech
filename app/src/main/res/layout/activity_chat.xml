@@ -77,35 +77,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Chat_RecyclerView">
 
-        <ImageButton
-            android:id="@+id/Chat_SendMsg"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="Send Message"
-            android:padding="10dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/img_send"
-            app:tint="@color/white" />
-
-        <EditText
-            android:id="@+id/Chat_Input"
+        <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/transparent"
-            android:gravity="top"
-            android:hint="Type message"
-            android:maxHeight="170dp"
-            android:maxLength="216"
-            android:maxLines="3"
-            android:textColor="@color/white"
-            android:textColorHint="#8C8C8C"
-            android:textSize="20sp"
+            android:layout_marginEnd="8dp"
+            app:cardBackgroundColor="#151515"
+            app:cardCornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/Chat_SendMsg"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/cardView5"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <EditText
+                android:id="@+id/Chat_Input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:backgroundTint="@android:color/transparent"
+                android:gravity="top"
+                android:hint="Type message"
+                android:maxHeight="170dp"
+                android:maxLength="216"
+                android:maxLines="3"
+                android:textColor="@color/white"
+                android:textColorHint="#8C8C8C"
+                android:textSize="20sp" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#151515"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageButton
+                android:id="@+id/Chat_SendMsg"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="Send Message"
+                android:padding="15dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/img_send"
+                app:tint="@color/white" />
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

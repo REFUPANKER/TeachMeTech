@@ -1,13 +1,11 @@
 package com.refupanker.teachmetech.view
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.collection.ArrayMap
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.ktx.auth
@@ -17,10 +15,6 @@ import com.google.firebase.ktx.Firebase
 import com.refupanker.teachmetech.adapter.adapter_announcements
 import com.refupanker.teachmetech.databinding.FragmentHomeBinding
 import com.refupanker.teachmetech.model.mdl_announcement
-import com.refupanker.teachmetech.model.mdl_course
-import com.refupanker.teachmetech.model.mdl_sub_paragraph
-import com.refupanker.teachmetech.model.mdl_sub_title
-import com.refupanker.teachmetech.model.mdl_sub_video
 import com.refupanker.teachmetech.model.mdl_user
 import kotlinx.coroutines.launch
 import java.util.UUID

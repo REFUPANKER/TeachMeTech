@@ -2,7 +2,6 @@ package com.refupanker.teachmetech.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -116,7 +115,7 @@ class FragmentProfile : Fragment() {
                             ).show()
                         }
                     } catch (e: Exception) {
-                        Log.e("TMT", e.message.toString())
+
                     }
                 }
         }
