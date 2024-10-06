@@ -60,14 +60,7 @@ class FragmentCourses : Fragment() {
         }
 
         binding.CoursesSearchBtn.setOnClickListener { MakeSearch() }
-        binding.CoursesSearch.setOnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                MakeSearch()
-                true
-            } else {
-                false
-            }
-        }
+
         binding.CoursesClearSearch.setOnClickListener {
             binding.CoursesClearSearch.visibility = View.GONE
             binding.CoursesSearch.text = null
@@ -125,11 +118,11 @@ class FragmentCourses : Fragment() {
             ).show()
             return
         }
-        courses.clear()
-        adapter?.notifyDataSetChanged()
         binding.CoursesClearSearch.visibility = View.VISIBLE
         binding.CoursesStatusText.visibility = View.VISIBLE
         binding.CoursesStatusText.text = "Searching ..."
+        courses.clear()
+        adapter?.notifyDataSetChanged()
         lifecycleScope.launch {
             val searchText = binding.CoursesSearch.text.toString()
             db.collection("Courses")

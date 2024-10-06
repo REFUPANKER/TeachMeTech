@@ -43,7 +43,7 @@ class ActivityCourse : AppCompatActivity() {
         binding.CourseHeaderLikes.text = course.likes.toString()
         binding.CourseHeaderDescription.text = course.description
         binding.CourseHeaderCategory.text = course.category
-
+        //TODO: add steps system
         lifecycleScope.launch {
             binding.CourseStatus.visibility = View.VISIBLE
             binding.CourseStatus.text = "Loading ..."

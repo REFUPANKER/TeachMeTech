@@ -120,7 +120,7 @@ class FragmentExplore : Fragment() {
             binding.ExplorePopularCoursesdStatus.text = "Loading ..."
             db.collection("Courses")
                 .orderBy("likes", Query.Direction.DESCENDING)
-                .limit(5)
+                .limit(4)
                 .get()
                 .addOnCompleteListener { t ->
                     try {

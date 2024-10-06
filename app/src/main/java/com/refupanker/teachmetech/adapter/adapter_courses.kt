@@ -12,7 +12,6 @@ import com.refupanker.teachmetech.model.mdl_course
 import com.refupanker.teachmetech.view.ActivityCourse
 import java.text.SimpleDateFormat
 
-//TODO: optimize small card ui
 class adapter_courses(
     private val courses: ArrayList<mdl_course>) :
     RecyclerView.Adapter<adapter_courses.holder>() {
