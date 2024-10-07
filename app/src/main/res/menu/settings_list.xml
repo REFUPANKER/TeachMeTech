@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Update">
+        <menu>
+            <item
+                android:id="@+id/item_settings_update_pfp"
+                android:icon="@drawable/img_right"
+                android:title="Profile Photo" />
+            <item
+                android:id="@+id/item_settings_update_username"
+                android:icon="@drawable/img_right"
+                android:title="Username" />
+            <item
+                android:id="@+id/item_settings_update_aboutme"
+                android:icon="@drawable/img_right"
+                android:title="Aboutme" />
+        </menu>
+    </item>
+</menu>

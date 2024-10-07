@@ -84,6 +84,7 @@
                     android:layout_margin="5dp"
                     android:backgroundTint="@android:color/transparent"
                     android:hint="Type here"
+                    android:inputType="textEmailAddress"
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textColorHint="#909090"
@@ -125,13 +126,13 @@
                 android:layout_height="50dp" />
 
             <Button
-                android:textColor="@color/white"
                 android:id="@+id/AuthSignUpButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#151515"
                 android:text="Sign Up"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/white" />
 
 
         </LinearLayout>

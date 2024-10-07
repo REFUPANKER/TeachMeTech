@@ -4,30 +4,25 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
-import com.refupanker.teachmetech.R
 import com.refupanker.teachmetech.adapter.adapter_badges
 import com.refupanker.teachmetech.databinding.FragmentProfileBinding
 import com.refupanker.teachmetech.model.mdl_badge
 import com.refupanker.teachmetech.model.mdl_user
 import com.refupanker.teachmetech.model.mdl_userprops
 import kotlinx.coroutines.launch
-import java.io.File
 import java.util.UUID
 
 
@@ -53,13 +48,11 @@ class FragmentProfile : Fragment() {
         binding.ProfileBadges.adapter = adapter_badge
         binding.ProfileBadges.layoutManager = GridLayoutManager(ctx, 8)
 
-
-        binding.ProfileLogout.setOnClickListener {
-            Toast.makeText(ctx, "Logging out", Toast.LENGTH_SHORT).show()
-            Firebase.auth.signOut()
-            ctx.startActivity(Intent(ctx, ActivityAuth::class.java))
-            activity?.finish()
+        binding.ProfileSettings.setOnClickListener {
+            val settings = Intent(requireContext(), ActivitySettings::class.java)
+            startActivity(settings)
         }
+
 
         GetUserData()
 
@@ -91,6 +84,7 @@ class FragmentProfile : Fragment() {
                             binding.ProfileUsername.text = user.name
 
                             // Get user profile photo
+                            binding.ProfilePfpLoading.visibility = View.VISIBLE
                             storage.child("ProfilePhotos/${user.token}")
                                 .getBytes(Long.MAX_VALUE)
                                 .addOnCompleteListener { t ->
@@ -109,6 +103,7 @@ class FragmentProfile : Fragment() {
                                                     Color.WHITE
                                                 )
                                         }
+                                        binding.ProfilePfpLoading.visibility = View.GONE
                                     } catch (e: Exception) {
                                     }
                                 }

@@ -24,6 +24,7 @@
         style="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:background="@color/black"
         android:orientation="horizontal"
         app:itemBackground="@drawable/style_main_bottombar"
         app:itemIconTint="@drawable/style_main_bottombar"
