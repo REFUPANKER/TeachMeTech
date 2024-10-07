@@ -73,6 +73,7 @@ class FragmentProfile : Fragment() {
                             val user = mdl_user(
                                 token = t.result.data?.get("token") as String,
                                 name = t.result.data!!["name"] as String,
+                                aboutMe = t.result.data!!["aboutMe"] as String,
                                 rank = t.result.data!!["rank"] as Long,
                                 active = t.result.data!!["active"] as Boolean
                             )
@@ -82,6 +83,7 @@ class FragmentProfile : Fragment() {
                             binding.ProfileRank.text =
                                 user.rank.toString() + "/" + binding.ProfileRankProgress.max
                             binding.ProfileUsername.text = user.name
+                            binding.ProfileAboutme.text = user.aboutMe
 
                             // Get user profile photo
                             binding.ProfilePfpLoading.visibility = View.VISIBLE
@@ -129,12 +131,10 @@ class FragmentProfile : Fragment() {
                         if (t.isSuccessful) {
                             val userprops = mdl_userprops(
                                 token = t.result.data?.get("token") as String,
-                                aboutMe = t.result.data!!["aboutMe"] as String,
                                 likedCourses = t.result.data!!["likedCourses"] as List<String>,
                                 badges = t.result.data!!["badges"] as List<String>,
                                 shownBadge = t.result.data!!["shownBadge"] as String
                             )
-                            binding.ProfileAboutme.text = userprops.aboutMe
                             if (userprops.badges.isEmpty()) {
                                 binding.textView7.text = "Badges (No badges)"
                             }

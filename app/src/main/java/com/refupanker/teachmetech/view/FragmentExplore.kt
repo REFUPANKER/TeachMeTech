@@ -100,6 +100,11 @@ class FragmentExplore : Fragment() {
                                         )
                                     )
                                 }
+                                if (task.result.isEmpty) {
+                                    binding.ExploreLeaderboardStatus.text = "No results found"
+                                } else {
+                                    binding.ExploreLeaderboardStatus.visibility = View.GONE
+                                }
                                 adapter_leaderboardRows?.notifyDataSetChanged()
                             }
                         } else {
@@ -137,7 +142,11 @@ class FragmentExplore : Fragment() {
                                     )
                                 )
                             }
-                            binding.ExplorePopularCoursesdStatus.visibility = View.GONE
+                            if (t.result.isEmpty) {
+                                binding.ExplorePopularCoursesdStatus.text = "No results found"
+                            } else {
+                                binding.ExplorePopularCoursesdStatus.visibility = View.GONE
+                            }
                             adapter_popularCourses?.notifyDataSetChanged()
                         } else {
                             Toast.makeText(context, "Cant get courses", Toast.LENGTH_SHORT).show()

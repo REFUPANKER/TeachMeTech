@@ -7,4 +7,5 @@ data class mdl_user(
     val name: String,
     val rank: Long = 0,
     val active: Boolean = true,
-    ) : Serializable
+    val aboutMe: String = "Hello im learning tech with teachmetech",
+) : Serializable

@@ -98,7 +98,11 @@ class FragmentCourses : Fragment() {
                                     )
                                 )
                             }
-                            binding.CoursesStatusText.visibility = View.GONE
+                            if (t.result.isEmpty) {
+                                binding.CoursesStatusText.text = "No results found"
+                            } else {
+                                binding.CoursesStatusText.visibility = View.GONE
+                            }
                             adapter?.notifyDataSetChanged()
                         } else {
                             Toast.makeText(context, "Cant get courses", Toast.LENGTH_SHORT).show()
