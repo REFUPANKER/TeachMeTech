@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.database.ktx)
     implementation(libs.androidx.databinding.runtime)
+    implementation(libs.androidx.exifinterface)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

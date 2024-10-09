@@ -2,10 +2,11 @@ package com.refupanker.teachmetech.view
 
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Matrix
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ import com.refupanker.teachmetech.model.mdl_badge
 import com.refupanker.teachmetech.model.mdl_user
 import com.refupanker.teachmetech.model.mdl_userprops
 import kotlinx.coroutines.launch
+import java.io.ByteArrayInputStream
 import java.util.UUID
 
 
@@ -92,13 +94,29 @@ class FragmentProfile : Fragment() {
                                 .addOnCompleteListener { t ->
                                     try {
                                         if (t.isSuccessful) {
-                                            Log.e("TMT", "Result : " + t.result.toString())
-                                            val bmp = BitmapFactory.decodeByteArray(
-                                                t.result,
-                                                0,
-                                                t.result.size
+                                            val bmp = BitmapFactory.decodeByteArray(t.result, 0, t.result.size)
+
+                                            val exifInterface =
+                                                androidx.exifinterface.media.ExifInterface(
+                                                    ByteArrayInputStream(t.result)
+                                                )
+                                            val orientation = exifInterface.getAttributeInt(
+                                                androidx.exifinterface.media.ExifInterface.TAG_ORIENTATION,
+                                                androidx.exifinterface.media.ExifInterface.ORIENTATION_NORMAL
                                             )
-                                            binding.ProfilePfp.setImageBitmap(bmp)
+
+                                            val matrix = Matrix()
+                                            when (orientation) {
+                                                androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
+                                                androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
+                                                androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+                                            }
+
+                                            val rotatedBmp = Bitmap.createBitmap(
+                                                bmp, 0, 0, bmp.width, bmp.height, matrix, true
+                                            )
+
+                                            binding.ProfilePfp.setImageBitmap(rotatedBmp)
                                         } else {
                                             binding.ProfilePfp.imageTintList =
                                                 ColorStateList.valueOf(
