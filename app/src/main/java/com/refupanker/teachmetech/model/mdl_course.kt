@@ -10,4 +10,5 @@ data class mdl_course(
     val category: String,
     val date: Date = Date(),
     val likes: Long = 0,
+    val contents: ArrayList<String> = arrayListOf()
 ) : Serializable

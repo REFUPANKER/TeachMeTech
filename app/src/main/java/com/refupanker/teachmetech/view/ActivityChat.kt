@@ -20,6 +20,7 @@ import com.refupanker.teachmetech.model.mdl_chatroom
 import com.refupanker.teachmetech.model.mdl_user
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
 class ActivityChat : AppCompatActivity() {
@@ -82,7 +83,9 @@ class ActivityChat : AppCompatActivity() {
         //setup chat
         val chatNode = chatRoom?.token.toString()
 
-        db.reference.child("ChatRooms").child(chatNode)
+        db.reference.child("ChatRooms")
+            .child(chatNode)
+            .child("Messages")
             .orderByChild("timestamp")
             .startAt(System.currentTimeMillis().toDouble())
             .addChildEventListener(object : ChildEventListener {
@@ -118,6 +121,15 @@ class ActivityChat : AppCompatActivity() {
                 override fun onCancelled(error: DatabaseError) {}
             })
 
+
+        // insert user to users node
+        lifecycleScope.launch {
+            db.reference.child("ChatRooms")
+                .child(chatRoom!!.token)
+                .child("Users")
+                .child(auth.currentUser!!.uid)
+                .setValue(true)
+        }
     }
 
     fun SendMessage() {
@@ -138,6 +150,7 @@ class ActivityChat : AppCompatActivity() {
         db.reference
             .child("ChatRooms")
             .child(chatRoom?.token.toString())
+            .child("Messages")
             .child(msgToken)
             .setValue(
                 mdl_chat_msg(
@@ -194,7 +207,21 @@ class ActivityChat : AppCompatActivity() {
         )
     }
 
+    fun RemoveUserFromUsersList() {
+        //TODO: fix
+            try {
+                db.reference.child("ChatRooms")
+                    .child(chatRoom!!.token)
+                    .child("Users")
+                    .child(auth.currentUser!!.uid)
+                    .setValue(null)
+            } catch (e: Exception) {
+
+            }
+    }
+
     override fun onDestroy() {
+        RemoveUserFromUsersList()
         super.onDestroy()
         _binding = null
     }

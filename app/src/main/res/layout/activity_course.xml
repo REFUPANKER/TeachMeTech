@@ -146,8 +146,6 @@
                 android:paddingHorizontal="5dp"
                 android:paddingVertical="10dp"
                 tools:context=".view.ActivityCourse" />
-
-
         </LinearLayout>
     </ScrollView>
 

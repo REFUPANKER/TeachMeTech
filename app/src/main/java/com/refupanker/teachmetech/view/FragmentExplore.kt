@@ -138,7 +138,8 @@ class FragmentExplore : Fragment() {
                                         description = i.getString("description").toString(),
                                         category = i.getString("category").toString(),
                                         date = i.getDate("date") as Date,
-                                        likes = i.getLong("likes") as Long
+                                        likes = i.getLong("likes") as Long,
+                                        contents = i.get("contents") as ArrayList<String>
                                     )
                                 )
                             }

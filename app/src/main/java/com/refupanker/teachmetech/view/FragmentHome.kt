@@ -49,22 +49,6 @@ class FragmentHome : Fragment() {
         return binding.root
     }
 
-    fun AddAnnonc() {
-        val token = UUID.randomUUID().toString()
-        db.collection("Announcements").document(token).set(
-            mdl_announcement(
-                token,
-                "Testing",
-                "Hello world!\n" + token
-            )
-        ).addOnCompleteListener { t ->
-            if (t.isSuccessful) {
-                Toast.makeText(context, "new announcement added", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-    }
-
     //TODO: better user data view on UI
     private fun GetUserData() {
         binding.HomeUsername.text = "Loading ..."
@@ -117,7 +101,6 @@ class FragmentHome : Fragment() {
                                 for (i in task.result) {
                                     annoncs.add(
                                         mdl_announcement(
-                                            token = i.getString("token").toString(),
                                             title = i.getString("title").toString(),
                                             description = i.getString("description").toString(),
                                             date = i.getDate("date"),

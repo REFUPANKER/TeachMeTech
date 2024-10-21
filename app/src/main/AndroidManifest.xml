@@ -15,6 +15,9 @@
         android:theme="@style/Theme.TeachMeTech"
         tools:targetApi="31">
         <activity
+            android:name=".view.ActivityCourseContent"
+            android:exported="false" />
+        <activity
             android:name=".view.ActivitySettings"
             android:exported="false" />
         <activity

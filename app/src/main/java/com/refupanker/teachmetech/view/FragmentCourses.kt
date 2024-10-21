@@ -89,12 +89,13 @@ class FragmentCourses : Fragment() {
                             for (i in t.result) {
                                 courses.add(
                                     mdl_course(
-                                        token = i.getString("token").toString(),
+                                        token = i.id,
                                         title = i.getString("title").toString(),
                                         description = i.getString("description").toString(),
                                         category = i.getString("category").toString(),
                                         date = i.getDate("date") as Date,
-                                        likes = i.getLong("likes") as Long
+                                        likes = i.getLong("likes") as Long,
+                                        contents = i.get("contents") as ArrayList<String>
                                     )
                                 )
                             }
@@ -140,12 +141,13 @@ class FragmentCourses : Fragment() {
                             for (i in result.documents) {
                                 courses.add(
                                     mdl_course(
-                                        token = i.getString("token") as String,
+                                        token = i.id,
                                         title = i.getString("title") as String,
                                         description = i.getString("description") as String,
                                         category = i.getString("category") as String,
                                         date = i.getDate("date") as Date,
-                                        likes = i.getLong("likes") as Long
+                                        likes = i.getLong("likes") as Long,
+                                        contents = i.get("contents") as ArrayList<String>
                                     )
                                 )
                             }
@@ -164,28 +166,6 @@ class FragmentCourses : Fragment() {
             { it.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } }
     }
 
-    fun AddCourse() {
-        lifecycleScope.launch {
-            var courseToken = UUID.randomUUID().toString()
-            db.collection("Courses").document(courseToken)
-                .set(
-                    mdl_course(
-                        token = courseToken,
-                        "My Course".toCamelCaseSimple(),
-                        "Hello we are developing app",
-                        "General"
-                    )
-                )
-
-            val contents: ArrayList<Any> = arrayListOf()
-            contents.add(mdl_sub_title(text = "Ghost-Mary On A Cross ", size = 20))
-            contents.add(mdl_sub_video(target = "k5mX3NkA7jM"))
-            contents.add(mdl_sub_title(text = "Lets talk about app", size = 16))
-            contents.add(mdl_sub_paragraph(text = "To be honest\ni wasnt thinking it can reach to this point :)"))
-            db.collection("CourseContents").document(courseToken)
-                .set(mapOf("data" to contents))
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()

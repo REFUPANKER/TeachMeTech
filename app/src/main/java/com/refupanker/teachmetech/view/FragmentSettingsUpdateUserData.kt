@@ -81,12 +81,12 @@ class FragmentSettingsUpdateUserData : Fragment() {
     fun UpdateData() {
 
         var updateParts: MutableMap<String?, Any?> = mutableMapOf()
-        val pure_name = binding.SettingsUpdateUsernameInput.text.toString()
+        val pure_name = binding.SettingsUpdateUsernameInput.text.toString().trim()
+            .replace("\n", " ")
             .replace("\u200E", "")
-            .trim(' ')
-        val pure_aboutMe = binding.SettingsUpdateAboutmeInput.text.toString()
+        val pure_aboutMe = binding.SettingsUpdateAboutmeInput.text.toString().trim()
+            .replace("\n", " ")
             .replace("\u200E", "")
-            .trim(' ')
         if (!pure_name.isNullOrEmpty()) {
             if (pure_name.length < 3) {
                 Toast.makeText(context, "Name is too short (min 4 letters)", Toast.LENGTH_SHORT)
@@ -105,7 +105,7 @@ class FragmentSettingsUpdateUserData : Fragment() {
                     .show()
                 return
             }
-            updateParts.put("aboutMe", binding.SettingsUpdateAboutmeInput.text.toString())
+            updateParts.put("aboutMe", pure_aboutMe)
         }
 
         if (updateParts.isEmpty()) {

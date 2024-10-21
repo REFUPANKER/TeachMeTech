@@ -31,8 +31,8 @@ class adapter_chat_messages(private val rows: ArrayList<mdl_chat_msg>) :
         if (nameIndex != -1) {
             holder.binding.itemMsgSender.setTextColor(nameColors.getValue(rows[position].sender))
         } else {
-            var max = 200
-            var min = 100
+            var max = 250
+            var min = 150
             var r = 100
             var g = 100
             var b = 100
