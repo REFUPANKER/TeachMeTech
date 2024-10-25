@@ -58,7 +58,7 @@ class FragmentExplore : Fragment() {
             val chatIntent = Intent(context, ActivityChat::class.java)
             chatIntent.putExtra(
                 "ChatRoom", mdl_chatroom(
-                    "PublicChatRooom1",
+                    "PublicChatRoom1",
                     "public",
                     "Chat Room 1"
                 )

@@ -79,10 +79,8 @@ class ActivityChat : AppCompatActivity() {
                     }
                 }
         }
-
         //setup chat
         val chatNode = chatRoom?.token.toString()
-
         db.reference.child("ChatRooms")
             .child(chatNode)
             .child("Messages")
@@ -157,7 +155,7 @@ class ActivityChat : AppCompatActivity() {
                     msgToken,
                     user!!.token,
                     user!!.name,
-                    msg
+                    msg,
                 )
             )
 
