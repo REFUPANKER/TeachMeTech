@@ -1,6 +1,7 @@
 package com.refupanker.teachmetech.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -50,10 +52,39 @@ class ActivityChat : AppCompatActivity() {
         binding.ChatRecyclerView.layoutManager = LinearLayoutManager(this)
 
         chatRoom = intent.getSerializableExtra("ChatRoom") as mdl_chatroom
+        val chatNode = chatRoom?.token.toString()
         binding.ChatTitle.text = chatRoom?.name
 
         binding.ChatSendMsg.setOnClickListener { SendMessage() }
         binding.ChatGoBack.setOnClickListener { finish() }
+
+        // check room is active
+        lifecycleScope.launch {
+            binding.ChatSendMsg.isEnabled = false;
+            db.reference
+                .child("ChatRooms")
+                .child(chatNode)
+                .child("State")
+                .get().addOnCompleteListener { t ->
+                    if (t.isSuccessful) {
+                        if (!(t.result.value.toString().toBoolean())) {
+                            Toast.makeText(
+                                baseContext,
+                                "${chatRoom?.name} is closed for now",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                            finish();
+                        } else {
+                            binding.ChatSendMsg.isEnabled = true;
+                        }
+                    } else {
+                        Toast.makeText(baseContext, "Cant use chat right now", Toast.LENGTH_SHORT)
+                            .show()
+                        finish();
+                    }
+                }.await()
+        }
 
         //get user
         lifecycleScope.launch {
@@ -73,52 +104,77 @@ class ActivityChat : AppCompatActivity() {
                             Toast.makeText(
                                 baseContext, "Cant get user data", Toast.LENGTH_SHORT
                             ).show()
+                            finish()
                         }
                     } catch (e: Exception) {
 
                     }
                 }
         }
+
         //setup chat
-        val chatNode = chatRoom?.token.toString()
-        db.reference.child("ChatRooms")
-            .child(chatNode)
-            .child("Messages")
-            .orderByChild("timestamp")
-            .startAt(System.currentTimeMillis().toDouble())
-            .addChildEventListener(object : ChildEventListener {
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    lifecycleScope.launch {
-                        try {
-                            AddMessageItem(
-                                mdl_chat_msg(
-                                    snapshot.child("token").value.toString(),
-                                    snapshot.child("user").value.toString(),
-                                    snapshot.child("sender").value.toString(),
-                                    snapshot.child("message").value.toString(),
+        lifecycleScope.launch {
+            // set/get timestamp
+            db.reference.child("Metrics").child("timestamp")
+                .setValue(ServerValue.TIMESTAMP).await()
+
+
+            var ctm: Double = 0.0;
+            db.reference.child("Metrics").child("timestamp").get()
+                .addOnCompleteListener { t ->
+                    if (t.isSuccessful) {
+                        val r = t.result.value as Number
+                        ctm = r.toDouble()
+                    } else {
+                        Toast.makeText(baseContext, "Cant use chat right now", Toast.LENGTH_SHORT)
+                            .show()
+                        finish();
+                    }
+                }.await()
+
+
+            db.reference.child("ChatRooms")
+                .child(chatNode)
+                .child("Messages")
+                .orderByChild("timestamp")
+                .startAt(ctm)
+                .addChildEventListener(object : ChildEventListener {
+                    override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                        lifecycleScope.launch {
+                            try {
+                                AddMessageItem(
+                                    mdl_chat_msg(
+                                        snapshot.child("token").value.toString(),
+                                        snapshot.child("user").value.toString(),
+                                        snapshot.child("sender").value.toString(),
+                                        snapshot.child("message").value.toString(),
+                                    )
                                 )
-                            )
-                        } catch (e: Exception) {
+                            } catch (e: Exception) {
+                            }
                         }
                     }
-                }
 
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+                    override fun onChildChanged(
+                        snapshot: DataSnapshot,
+                        previousChildName: String?
+                    ) {
+                    }
 
-                override fun onChildRemoved(snapshot: DataSnapshot) {
-                    lifecycleScope.launch {
-                        try {
-                            AfterMessageDeleted(snapshot.key.toString())
-                        } catch (e: Exception) {
+                    override fun onChildRemoved(snapshot: DataSnapshot) {
+                        lifecycleScope.launch {
+                            try {
+                                AfterMessageDeleted(snapshot.key.toString())
+                            } catch (e: Exception) {
+                            }
                         }
                     }
-                }
 
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+                    override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
 
-                override fun onCancelled(error: DatabaseError) {}
-            })
-
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+        }
 
         // insert user to users node
         lifecycleScope.launch {
@@ -143,6 +199,9 @@ class ActivityChat : AppCompatActivity() {
             Toast.makeText(this, "Message must be valid", Toast.LENGTH_SHORT).show()
             return
         }
+
+        binding.ChatSendMsg.isEnabled = false
+        binding.ChatInputCountDown.visibility = View.VISIBLE
 
         var msgToken = UUID.randomUUID().toString()
         db.reference
@@ -172,8 +231,7 @@ class ActivityChat : AppCompatActivity() {
             }
             Toast.makeText(baseContext, "rank score increased !!", Toast.LENGTH_SHORT).show()
         }
-        binding.ChatSendMsg.isEnabled = false
-        binding.ChatInputCountDown.visibility = View.VISIBLE
+
         lifecycleScope.launch {
             for (i in 5 downTo 1) {
                 binding.ChatInputCountDown.text = i.toString() + "s"
@@ -207,15 +265,15 @@ class ActivityChat : AppCompatActivity() {
 
     fun RemoveUserFromUsersList() {
         //TODO: fix
-            try {
-                db.reference.child("ChatRooms")
-                    .child(chatRoom!!.token)
-                    .child("Users")
-                    .child(auth.currentUser!!.uid)
-                    .setValue(null)
-            } catch (e: Exception) {
+        try {
+            db.reference.child("ChatRooms")
+                .child(chatRoom!!.token)
+                .child("Users")
+                .child(auth.currentUser!!.uid)
+                .setValue(null)
+        } catch (e: Exception) {
 
-            }
+        }
     }
 
     override fun onDestroy() {

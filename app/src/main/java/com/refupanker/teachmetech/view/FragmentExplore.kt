@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -54,24 +55,25 @@ class FragmentExplore : Fragment() {
         binding.ExploreLeaderboard.adapter = adapter_leaderboardRows
         binding.ExploreLeaderboard.layoutManager = LinearLayoutManager(ctx)
 
-        binding.ExploreChatRoom1.setOnClickListener {
-            val chatIntent = Intent(context, ActivityChat::class.java)
-            chatIntent.putExtra(
-                "ChatRoom", mdl_chatroom(
-                    "PublicChatRoom1",
-                    "public",
-                    "Chat Room 1"
-                )
-            )
-            startActivity(chatIntent)
-        }
 
+        SetChatRoomOpeners(binding.ExploreChatRoom1, mdl_chatroom("PublicChatRoom1", "public", "Chat Room 1"))
+        SetChatRoomOpeners(binding.ExploreChatRoom2, mdl_chatroom("PublicChatRoom2", "public", "Chat Room 2"))
+        SetChatRoomOpeners(binding.ExploreChatRoom3, mdl_chatroom("PublicChatRoom3", "public", "Chat Room 3"))
+        SetChatRoomOpeners(binding.ExploreChatRoom4, mdl_chatroom("PublicChatRoom4", "public", "Chat Room 4"))
 
 
         GetLeaderboard()
         GetCourses()
 
         return binding.root
+    }
+
+    fun SetChatRoomOpeners(button: ImageButton, model: mdl_chatroom) {
+        button.setOnClickListener {
+            val chatIntent = Intent(context, ActivityChat::class.java)
+            chatIntent.putExtra("ChatRoom", model)
+            startActivity(chatIntent)
+        }
     }
 
     fun GetLeaderboard() {
