@@ -118,13 +118,9 @@ class ActivityCourseContent : AppCompatActivity() {
                             LayoutParams.WRAP_CONTENT
                         )
                     newText.setOnClickListener {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(j.getValue("target").toString())
-                        )
-                        ContextCompat.startActivity(
-                            baseContext, intent, null
-                        )
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(j.getValue("target").toString()))
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK // Add this line
+                        startActivity(intent)
                     }
                     binding.CourseContentHolder.addView(newText)
                 }

@@ -119,7 +119,7 @@ class ActivityChat : AppCompatActivity() {
                 .setValue(ServerValue.TIMESTAMP).await()
 
 
-            var ctm: Double = 0.0;
+            var ctm: Double = Double.MAX_VALUE;
             db.reference.child("Metrics").child("timestamp").get()
                 .addOnCompleteListener { t ->
                     if (t.isSuccessful) {
@@ -174,10 +174,8 @@ class ActivityChat : AppCompatActivity() {
 
                     override fun onCancelled(error: DatabaseError) {}
                 })
-        }
 
-        // insert user to users node
-        lifecycleScope.launch {
+            // insert user to users node
             db.reference.child("ChatRooms")
                 .child(chatRoom!!.token)
                 .child("Users")
