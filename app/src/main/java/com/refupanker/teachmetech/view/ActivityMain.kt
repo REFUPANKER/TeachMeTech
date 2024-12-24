@@ -3,20 +3,17 @@ package com.refupanker.teachmetech.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.transition.Visibility
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.refupanker.teachmetech.R
 import com.refupanker.teachmetech.databinding.ActivityMainBinding
-import com.refupanker.teachmetech.model.mdl_user
+import com.refupanker.teachmetech.model.mdl_baninfo
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 class ActivityMain : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -33,6 +30,7 @@ class ActivityMain : AppCompatActivity() {
             Toast.makeText(this, "Auth required", Toast.LENGTH_SHORT).show()
             GoToAuth()
         }
+        CheckBanState()
 
         setContentFragment(FragmentHome())
 
@@ -52,6 +50,31 @@ class ActivityMain : AppCompatActivity() {
         startActivity(Intent(this, ActivityAuth::class.java))
         finish()
         return
+    }
+
+    fun CheckBanState() {
+        lifecycleScope.launch {
+            Firebase.firestore.collection("Bans")
+                .document(auth.currentUser?.uid.toString()).get()
+                .addOnCompleteListener { t ->
+                    try {
+                        if (t.isSuccessful) {
+                            val banned = Intent(baseContext, ActivityUserBanned::class.java)
+                            banned.putExtra(
+                                "baninfo", mdl_baninfo(
+                                    t.result.id,
+                                    t.result.data!!["reason"].toString(),
+                                    t.result.data!!["until"].toString(),
+                                )
+                            )
+                            auth.signOut()
+                            startActivity(banned)
+                            finish()
+                        }
+                    } catch (e: Exception) {
+                    }
+                }
+        }
     }
 
     val FragmentOrder = arrayOf("home", "courses", "explore", "messages", "subdminvites", "profile")

@@ -43,7 +43,10 @@ class ActivityCourseContent : AppCompatActivity() {
 
         binding.ContentTitle.text = content.title
         lifecycleScope.launch {
-            GenerateUiObject(content)
+            try {
+                GenerateUiObject(content)
+            } finally {
+            }
         }
     }
 
@@ -118,7 +121,8 @@ class ActivityCourseContent : AppCompatActivity() {
                             LayoutParams.WRAP_CONTENT
                         )
                     newText.setOnClickListener {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(j.getValue("target").toString()))
+                        val intent =
+                            Intent(Intent.ACTION_VIEW, Uri.parse(j.getValue("target").toString()))
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK // Add this line
                         startActivity(intent)
                     }
